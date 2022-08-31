@@ -4,7 +4,7 @@ import '../Styles/LoginPage.scss';
 function LoginPage() {
   return (
     <div className='parent-container'>
-    <div className='parent-card'>
+    <div className='parent-card-loginpage'>
         <div className='right-container'>
             <h1 className='right-heading'>LOGIN PAGE</h1>
             <input className='input-field email' type='email' placeholder='Email'></input>  

@@ -4,7 +4,7 @@ import '../Styles/SignupPage.scss';
 function SignupPage() {
   return (
     <div className='parent-container'>
-    <div className='parent-card'>
+    <div className='parent-card-signup'>
         <div className='left-container'>
             <h1 className='heading-font'>Welcome Back ! </h1>
             <p className='paragraph-font'>To keep connected please login with your personal info..</p>

@@ -13,7 +13,7 @@ function HomePage() {
   };
   return (
     <div className="parent-container">
-      <div className="parent-card">
+      <div className="parent-card-homepage">
         <h1 className="heading-font">HOME PAGE</h1>
         <ul className="tabs-switch">
           <li
