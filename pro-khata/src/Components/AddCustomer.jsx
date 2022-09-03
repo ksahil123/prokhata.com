@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../Styles/AddCustomer.scss";
 
 function AddCustomer() {
@@ -17,7 +18,7 @@ function AddCustomer() {
             type="number"
             placeholder="Mobile Number"
           ></input>
-          <button className='button sign-up'>Confirm</button>
+          <Link to="/home-page"><button className='button sign-up'>Confirm</button></Link>
         </div>
         <div className="left-container">
           <div className="calculator-container"></div>

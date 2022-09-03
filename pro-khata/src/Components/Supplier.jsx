@@ -1,4 +1,5 @@
 import React from "react";
+import "../Styles/Customer.scss";
 
 function Supplier() {
   return (

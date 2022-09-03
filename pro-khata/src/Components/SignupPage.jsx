@@ -1,5 +1,6 @@
 import React from 'react';
 import '../Styles/SignupPage.scss';
+import { Link } from 'react-router-dom';
 
 function SignupPage() {
   return (
@@ -8,7 +9,7 @@ function SignupPage() {
         <div className='left-container'>
             <h1 className='heading-font'>Welcome Back ! </h1>
             <p className='paragraph-font'>To keep connected please login with your personal info..</p>
-            <button className='button sign-in'>Sign In</button>
+            <Link to="/login"><button className='button sign-in'>Sign In</button></Link>
         </div>
         <div className='right-container'>
             <h1 className='right-heading'>Create Account</h1>
@@ -20,7 +21,7 @@ function SignupPage() {
             <input className='input-field email' type='email' placeholder='Email'></input>  
             {/* <label>Enter Your Password:</label>   */}
             <input className='input-field password' type = 'password' placeholder='Password'></input>
-            <button className='button sign-up' >SIGN UP</button>
+            <Link to="/home-page"><button className='button sign-up' >SIGN UP</button></Link>
         </div>
     </div>
     </div>
