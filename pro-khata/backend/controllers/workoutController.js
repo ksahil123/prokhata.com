@@ -1,10 +1,10 @@
-const { ModalDialog } = require("react-bootstrap");
 const Workout = require("../models/workoutModel");
 const mongoose = require("mongoose");
 const { response } = require("express");
 // get all workouts
 const getWorkouts = async (req, res) => {
-  const workouts = await Workout.find({}).sort({ createdAt: -1 });
+  const user_id = req.user._id;
+  const workouts = await Workout.find({ user_id }).sort({ createdAt: -1 });
   try {
     res.status(200).json(workouts);
   } catch (err) {
@@ -32,11 +32,13 @@ const createWorkout = async (req, res) => {
   const { name, emailId, mobileNumber, password } = req.body;
   // add doc to DB
   try {
+    const user_id = req.user._id;
     const workout = await Workout.create({
       name,
       emailId,
       mobileNumber,
       password,
+      user_id,
     });
     res.status(200).json({
       result_Json: workout,

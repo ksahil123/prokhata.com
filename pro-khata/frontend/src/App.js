@@ -5,16 +5,34 @@ import HomePage from "./Components/HomePage";
 import AddCustomer from "./Components/AddCustomer";
 import DebtAndCread from "./Components/DebtAndCread";
 import Transaction from "./Components/Transaction";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ScreenLoader from "./Components/ScreenLoader";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Navbar from "./Components/Navbar";
+import { selectAuthenticationUser } from "./Redux/selector";
 
 function App() {
+  const user = useSelector(selectAuthenticationUser);
   return (
     <div className="App">
+      <ScreenLoader />
+      <Navbar />
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/home-page" element={<HomePage />} />
+          <Route
+            path="/"
+            element={user ? <HomePage /> : <Navigate to="/signup" />}
+          />
+          <Route
+            exact
+            path="/signup"
+            // element={!user ? <SignupPage /> : <Navigate to="/" />}
+            element ={<SignupPage/>}
+          />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" />}
+          />
           <Route path="/add-customer" element={<AddCustomer />} />
           <Route path="/transaction" element={<Transaction />} />
           <Route path="/debt-cread" element={<DebtAndCread />} />

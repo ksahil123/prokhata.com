@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import "../Styles/SignupPage.scss";
 import { Link } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectAuthenticationSignupError,
+  selectAuthenticationUser,
+  selectAuthenticationUserError,
+  selectWorkoutData,
+} from "../Redux/selector";
+import { actionSetWorkoutData } from "../Redux/Reducers/workoutReducers";
+import {
+  actionRequestLogout,
+  actionRequestSignup,
+  // actionSetLogin,
+} from "../Redux/Reducers/authenticationReducer";
+// import { actionSetHideScreenLoader, actionSetShowScreenLoader } from "../Redux/Reducers/screenLoaderReducer";
 function SignupPage() {
-  const [userName, setUserName] = useState(null);
-  // const [mobileNumber, setMobileNumber] = useState(null);
-  // const [emailId, setEmailId] = useState(null);
-  // const [password, setPassword] = useState(null);
+  const dispatch = useDispatch();
+  const workoutData = useSelector(selectWorkoutData);
+  const signupError = useSelector(selectAuthenticationSignupError);
+  const userData = useSelector(selectAuthenticationUser);
   const [error, setError] = useState(null);
   const [data, setData] = useState({
     name: "",
@@ -16,16 +29,24 @@ function SignupPage() {
   });
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const response = await fetch("/api/pro-khata");
+      const response = await fetch("/api/pro-khata", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      });
       const json = await response.json();
-      // console.log("response", response);
-      // console.log("json", json);
+      console.log("json", json);
       if (response.ok) {
-        setUserName(json);
+        // setUserName(json);
+        // dispatch(actionSetShowScreenLoader());
+        dispatch(actionSetWorkoutData(json));
+        // dispatch(actionSetHideScreenLoader());
       }
     };
-    fetchWorkouts();
-  }, [error]);
+    if (userData) {
+      fetchWorkouts();
+    }
+  }, [userData]);
 
   function handleChange(e, fieldName) {
     console.log(e.target.value);
@@ -34,22 +55,8 @@ function SignupPage() {
       [fieldName]: e.target.value,
     });
   }
-  const handleClick = async (e) => {
-    // e.preventDefault();
-    console.log("HI");
-    const response = await fetch("/api/pro-khata", {
-      method: "Post",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const json = await response.json();
-    console.log("resp", response);
-    console.log("json", json);
-    if (response.ok) {
-      setError(null);
-      alert("Record saved");
+  useEffect(() => {
+    if (userData) {
       setData({
         name: "",
         mobileNumber: 0,
@@ -57,16 +64,43 @@ function SignupPage() {
         password: "",
       });
     }
-    if (!response.ok) {
-      setError(json.error);
-    }
+  }, [userData]);
+  const handleClick = async (e) => {
+    dispatch(actionRequestSignup(data));
+
+    // const response = await fetch("/api/user/signup", {
+    //   method: "Post",
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    // const json = await response.json();
+    // // console.log("resp", response);
+    // console.log("json put", json);
+    // if (response.ok) {
+    //   setError(null);
+    //   alert("Record saved");
+    //   dispatch(actionSetLogin(json.token));
+    //   setData({
+    //     name: "",
+    //     mobileNumber: 0,
+    //     emailId: "",
+    //     password: "",
+    //   });
+    // }
+    // if (!response.ok) {
+    //   setError(json.error);
+    // }
   };
   return (
     <div className="parent-container">
       <div className="parent-card-signup">
         <div className="left-container">
           <h1 className="heading-font">Welcome Back !</h1>
-          <div>{userName && userName.map((each) => <p> {each.name}</p>)}</div>
+          <div>
+            {workoutData && workoutData.map((each) => <p> {each.name}</p>)}
+          </div>
           <p className="paragraph-font">
             To keep connected please login with your personal info..
           </p>
@@ -108,7 +142,7 @@ function SignupPage() {
           <button className="button sign-up" onClick={(e) => handleClick(e)}>
             SIGN UP
           </button>
-          {error && <p>{error}</p>}
+          {signupError && <p>{signupError}</p>}
           {/* </Link> */}
         </div>
       </div>
