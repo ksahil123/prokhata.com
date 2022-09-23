@@ -19,7 +19,6 @@ const getWorkout = async (req, res) => {
     return res.status(404).json({ error: "No such Workout Exists" });
   }
   const workout = await Workout.findById(id);
-  //   console.log("work", workout);
   if (!workout) {
     return res.status(400).json({ error: "No such Workout Exists" });
   }
@@ -73,7 +72,6 @@ const updateWorkout = async (req, res) => {
         ...req.body,
       }
     );
-    console.log("haa", workout);
     if (!workout) {
       return res.status(400).json({ error: "No such Workout Exists" });
     }

@@ -1,16 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  actionRequestCustomerById,
+  actionRequestCustomerData,
+  actionRequestUpdateCustomerData,
+  actionSetErrorUpdateCustomerData,
+  actionSetSuccessUpdateCustomerData,
+} from "../Redux/Reducers/customerReducer";
 import "../Styles/Transaction.scss";
-function Transaction() {
+import { isEmpty } from "lodash-es";
+import {
+  selectRequestUpdateCustomerDataError,
+  selectRequestUpdateCustomerDataSuccess,
+} from "../Redux/selector";
+function Transaction(props) {
+  const dispatch = useDispatch();
+  const updateCustomerDataSuccess = useSelector(
+    selectRequestUpdateCustomerDataSuccess
+  );
+  const updateCustomerDataError = useSelector(
+    selectRequestUpdateCustomerDataError
+  );
+  const { customerName, amount: amountP, type, id, setOption } = props;
+  const date = new Date();
+  const amount =
+    amountP === 0 || isNaN(amountP) || amountP === undefined || amountP === null
+      ? 0
+      : amountP;
+  const [transactionValue, setTransactionValue] = useState(0);
+  const [data, setData] = useState({
+    amount: amount,
+    lastTransaction: date,
+  });
+  useEffect(() => {
+    if (!isEmpty(updateCustomerDataSuccess)) {
+      dispatch(actionRequestCustomerById({ id }));
+      setOption(0);
+    }
+    return () => {
+      dispatch(actionSetSuccessUpdateCustomerData());
+    };
+  }, [updateCustomerDataSuccess]);
+
+  useEffect(() => {
+    if (!isEmpty(updateCustomerDataError)) {
+      alert(updateCustomerDataError.error);
+    }
+    return () => {
+      dispatch(actionSetErrorUpdateCustomerData());
+    };
+  }, [updateCustomerDataError]);
+  function handleChangeAmount(e) {
+    console.log("evasa", e);
+    setTransactionValue(e.target.value);
+    if (type === 1) {
+      setData({
+        ...data,
+        amount: parseInt(amount) + parseInt(e.target.value),
+      });
+    }
+    if (type === 2) {
+      setData({
+        ...data,
+        amount: parseInt(amount) - parseInt(e.target.value),
+      });
+    }
+  }
+  function handleClickOk() {
+    console.log("data", data);
+    if (transactionValue > 0 && !isNaN(data.amount)) {
+      dispatch(actionRequestUpdateCustomerData({ id, body: data }));
+    } else {
+      alert("please Enter valid values in the field");
+    }
+  }
+  function handleClickBack() {
+    setOption(0);
+  }
   return (
     <div className="parent-container">
       <div className="parent-card-transaction">
         <div className="right-container">
           <div className="names">
-            <h1>Customer's Name</h1>
+            <button className="button edit" onClick={handleClickBack}>
+              Back
+            </button>
+            <h1>{customerName}</h1>
           </div>
           <div className="transaction-amount">
-            <input type="number" className="input-amount"></input>
-            <p>100</p>
+            <input
+              type="number"
+              className="input-amount"
+              value={transactionValue}
+              onChange={(e) => handleChangeAmount(e)}
+            ></input>
+            <p className={data.amount >= 0 ? "advance" : "due"}>
+              {!isNaN(data.amount) && Math.abs(data.amount)}
+            </p>
           </div>
           <input type="date" className="date"></input>
           <div className="transaction-notes">
@@ -19,10 +105,15 @@ function Transaction() {
               placeholder="Add Note (Optional)"
               className="notes"
             ></input>
-            <button className="button-ok">ok</button>
+            <button className="button-ok" onClick={handleClickOk}>
+              {type === 1 && <span className="">Receiving</span>}
+              {type === 2 && <span className="">Giving</span>}
+            </button>
           </div>
         </div>
         <div className="left-container">
+          {type === 1 && <span>Received</span>}
+          {type === 2 && <span>Given</span>}
           <div className="calculator-container"></div>
         </div>
       </div>

@@ -9,6 +9,7 @@ import {
   actionSetSignup,
   actionSetSignupError,
 } from "../Reducers/authenticationReducer";
+import { actionResetCustomerData } from "../Reducers/customerReducer";
 import {
   actionSetShowScreenLoader,
   actionSetHideScreenLoader,
@@ -26,7 +27,6 @@ function* workerAuthenticationSignup(action) {
       },
     });
     const json = yield response.json();
-    console.log("json put", json);
     if (response.ok) {
       // save the user to the local storage
       localStorage.setItem("user", JSON.stringify(json));
@@ -36,7 +36,6 @@ function* workerAuthenticationSignup(action) {
       throw Error(json.error);
     }
   } catch (error) {
-    console.log("error", error.message);
     yield put(actionSetSignupError(error.message));
   } finally {
     yield put(actionSetHideScreenLoader());
@@ -53,7 +52,6 @@ function* workerAuthenticationLogin(action) {
       },
     });
     const json = yield response.json();
-    console.log("json put", json);
     if (response.ok) {
       // save the user to the local storage
       localStorage.setItem("user", JSON.stringify(json));
@@ -63,7 +61,6 @@ function* workerAuthenticationLogin(action) {
       throw Error(json.error);
     }
   } catch (error) {
-    console.log("error", error.message);
     yield put(actionSetLoginError(error.message));
   } finally {
     yield put(actionSetHideScreenLoader());
@@ -72,7 +69,7 @@ function* workerAuthenticationLogin(action) {
 function* workerAuthenticationLogout() {
   localStorage.removeItem("user");
   yield put(actionSetLogout());
-  yield put(actionResetWorkoutData());
+  yield put(actionResetCustomerData());
 }
 function* watcherAuthenticationSignup() {
   yield takeLatest(actionRequestSignup.type, workerAuthenticationSignup);

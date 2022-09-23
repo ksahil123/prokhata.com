@@ -18,7 +18,7 @@ function LoginPage() {
     });
   }
   function handleSignIn(e) {
-    console.log(data);
+    // console.log(data);
     dispatch(actionRequestLogin(data));
   }
   return (
@@ -26,7 +26,6 @@ function LoginPage() {
       <div className="parent-card-loginpage">
         <div className="right-container">
           <h1 className="right-heading">LOGIN PAGE</h1>
-          {console.log("data", data)}
           <input
             className="input-field email"
             type="email"

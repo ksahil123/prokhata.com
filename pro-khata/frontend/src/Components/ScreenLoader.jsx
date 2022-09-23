@@ -4,7 +4,6 @@ import { selectScreenLoaderValue } from "../Redux/selector";
 import "../Styles/ScreenLoader.scss";
 
 function ScreenLoader() {
-//   const visible = false;
   const isVisible = useSelector(selectScreenLoaderValue);
 
   if (isVisible) {

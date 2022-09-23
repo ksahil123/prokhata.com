@@ -17,7 +17,7 @@ import {
 // import { actionSetHideScreenLoader, actionSetShowScreenLoader } from "../Redux/Reducers/screenLoaderReducer";
 function SignupPage() {
   const dispatch = useDispatch();
-  const workoutData = useSelector(selectWorkoutData);
+  // const workoutData = useSelector(selectWorkoutData);
   const signupError = useSelector(selectAuthenticationSignupError);
   const userData = useSelector(selectAuthenticationUser);
   const [error, setError] = useState(null);
@@ -27,26 +27,26 @@ function SignupPage() {
     emailId: "",
     password: "",
   });
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      const response = await fetch("/api/pro-khata", {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      });
-      const json = await response.json();
-      console.log("json", json);
-      if (response.ok) {
-        // setUserName(json);
-        // dispatch(actionSetShowScreenLoader());
-        dispatch(actionSetWorkoutData(json));
-        // dispatch(actionSetHideScreenLoader());
-      }
-    };
-    if (userData) {
-      fetchWorkouts();
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   const fetchWorkouts = async () => {
+  //     const response = await fetch("/api/pro-khata", {
+  //       headers: {
+  //         Authorization: `Bearer ${userData.token}`,
+  //       },
+  //     });
+  //     const json = await response.json();
+  //     console.log("json", json);
+  //     if (response.ok) {
+  //       // setUserName(json);
+  //       // dispatch(actionSetShowScreenLoader());
+  //       dispatch(actionSetWorkoutData(json));
+  //       // dispatch(actionSetHideScreenLoader());
+  //     }
+  //   };
+  //   if (userData) {
+  //     fetchWorkouts();
+  //   }
+  // }, [userData]);
 
   function handleChange(e, fieldName) {
     console.log(e.target.value);
@@ -72,7 +72,7 @@ function SignupPage() {
     //   method: "Post",
     //   body: JSON.stringify(data),
     //   headers: {
-    //     "Content-Type": "application/json",
+    //     "Content-Type": "application/json",  
     //   },
     // });
     // const json = await response.json();
@@ -98,9 +98,9 @@ function SignupPage() {
       <div className="parent-card-signup">
         <div className="left-container">
           <h1 className="heading-font">Welcome Back !</h1>
-          <div>
+          {/* <div>
             {workoutData && workoutData.map((each) => <p> {each.name}</p>)}
-          </div>
+          </div> */}
           <p className="paragraph-font">
             To keep connected please login with your personal info..
           </p>

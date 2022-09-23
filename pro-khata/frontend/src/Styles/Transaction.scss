@@ -80,10 +80,16 @@
   //  border: none;
 }
 .button-ok {
-  width: 60px;
+  width: 100px;
   height: 60px;
   background: red;
   border-radius: 50%;
   border: none;
   cursor: pointer;
+}
+.due{
+  color: red;
+}
+.advance{
+  color: green;
 }
