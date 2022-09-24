@@ -6,6 +6,7 @@ const cors = require("cors");
 const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/user");
 const customerRoutes = require("./routes/customer");
+const transactionRoutes = require("./routes/transaction");
 const port = process.env.PORT;
 // express app
 const app = express();
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 app.use("/api/pro-khata", workoutRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/customer", customerRoutes);
+app.use("/api/transaction", transactionRoutes);
 // Connect to db
 
 mongoose

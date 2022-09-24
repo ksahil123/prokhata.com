@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, put, takeLatest } from "redux-saga/effects";
 import {
   actionRequestLogin,
   actionRequestLogout,
@@ -14,7 +14,6 @@ import {
   actionSetShowScreenLoader,
   actionSetHideScreenLoader,
 } from "../Reducers/screenLoaderReducer";
-import { actionResetWorkoutData } from "../Reducers/workoutReducers";
 function* workerAuthenticationSignup(action) {
   //   console.log("HI All I am SAGA", action.payload);
   yield put(actionSetShowScreenLoader());

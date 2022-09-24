@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   actionRequestCustomerData,
-  actionResetCustomerData,
 } from "../Redux/Reducers/customerReducer";
 import { selectCustomerData } from "../Redux/selector";
 import "../Styles/Customer.scss";

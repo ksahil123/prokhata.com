@@ -25,6 +25,12 @@ export const selectRequestUpdateCustomerDataSuccess = (state) =>
 export const selectRequestUpdateCustomerDataError = (state) =>
   state.customer.requestUpdateCustomerDataError;
 
+// transaction
+export const selectTransactionData = (state) =>
+  state.transaction.transactionData;
+export const selectErrorTransactionData = (state) =>
+  state.transaction.errorTransactionData;
+
 // Authentication
 export const selectAuthenticationUser = (state) => state.authentication.user;
 export const selectAuthenticationSignupError = (state) =>

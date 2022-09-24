@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  actionRequestCustomerById,
-  actionRequestCustomerData,
   actionRequestUpdateCustomerData,
   actionSetErrorUpdateCustomerData,
-  actionSetSuccessUpdateCustomerData,
 } from "../Redux/Reducers/customerReducer";
 import "../Styles/Transaction.scss";
 import { isEmpty } from "lodash-es";
-import {
-  selectRequestUpdateCustomerDataError,
-  selectRequestUpdateCustomerDataSuccess,
-} from "../Redux/selector";
+import { selectRequestUpdateCustomerDataError } from "../Redux/selector";
+import { actionRequestSaveTransactionData } from "../Redux/Reducers/transactionReducer";
 function Transaction(props) {
   const dispatch = useDispatch();
-  const updateCustomerDataSuccess = useSelector(
-    selectRequestUpdateCustomerDataSuccess
-  );
   const updateCustomerDataError = useSelector(
     selectRequestUpdateCustomerDataError
   );
@@ -32,16 +24,6 @@ function Transaction(props) {
     amount: amount,
     lastTransaction: date,
   });
-  useEffect(() => {
-    if (!isEmpty(updateCustomerDataSuccess)) {
-      dispatch(actionRequestCustomerById({ id }));
-      setOption(0);
-    }
-    return () => {
-      dispatch(actionSetSuccessUpdateCustomerData());
-    };
-  }, [updateCustomerDataSuccess]);
-
   useEffect(() => {
     if (!isEmpty(updateCustomerDataError)) {
       alert(updateCustomerDataError.error);
@@ -68,8 +50,17 @@ function Transaction(props) {
   }
   function handleClickOk() {
     console.log("data", data);
+    const transactionCode = type === 2 ? true : false;
     if (transactionValue > 0 && !isNaN(data.amount)) {
       dispatch(actionRequestUpdateCustomerData({ id, body: data }));
+      dispatch(
+        actionRequestSaveTransactionData({
+          customerId: id,
+          transactionAmount: transactionValue,
+          transactionCode,
+        })
+      );
+      setOption(0);
     } else {
       alert("please Enter valid values in the field");
     }

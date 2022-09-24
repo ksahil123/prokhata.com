@@ -5,22 +5,16 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectAuthenticationSignupError,
   selectAuthenticationUser,
-  selectAuthenticationUserError,
-  selectWorkoutData,
 } from "../Redux/selector";
-import { actionSetWorkoutData } from "../Redux/Reducers/workoutReducers";
 import {
-  actionRequestLogout,
   actionRequestSignup,
   // actionSetLogin,
 } from "../Redux/Reducers/authenticationReducer";
 // import { actionSetHideScreenLoader, actionSetShowScreenLoader } from "../Redux/Reducers/screenLoaderReducer";
 function SignupPage() {
   const dispatch = useDispatch();
-  // const workoutData = useSelector(selectWorkoutData);
   const signupError = useSelector(selectAuthenticationSignupError);
   const userData = useSelector(selectAuthenticationUser);
-  const [error, setError] = useState(null);
   const [data, setData] = useState({
     name: "",
     mobileNumber: 0,

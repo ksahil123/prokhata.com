@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { isEmpty } from "lodash-es";
 import { actionRequestCustomerById } from "../Redux/Reducers/customerReducer";
-import { selectCustomerById, selectCustomerData } from "../Redux/selector";
+import { actionRequestTransactionData } from "../Redux/Reducers/transactionReducer";
+import {
+  selectCustomerById,
+  selectRequestSaveCustomerDataSuccess,
+  selectRequestUpdateCustomerDataSuccess,
+  selectTransactionData,
+} from "../Redux/selector";
 import "../Styles/DebtAndCred.scss";
 import EachTransaction from "./EachTransaction";
 import Transaction from "./Transaction";
@@ -11,13 +18,24 @@ function DebtAndCread() {
   const { id } = useParams();
   const [options, setOption] = useState(0);
   const customerData = useSelector(selectCustomerById);
-  // let allCustomerData = useSelector(selectCustomerData);
-  // const customerData = allCustomerData.filter(
-  //   (eachItem) => eachItem._id === id
-  // )[0];
+  const transactionData = useSelector(selectTransactionData);
+  const saveTransactionDataSuccess = useSelector(
+    selectRequestSaveCustomerDataSuccess
+  );
+  const updateCustomerDataSuccess = useSelector(
+    selectRequestUpdateCustomerDataSuccess
+  );
   useEffect(() => {
-    dispatch(actionRequestCustomerById({ id }));
-  }, []);
+    if (
+      options === 0 ||
+      (!isEmpty(updateCustomerDataSuccess) &&
+        !isEmpty(saveTransactionDataSuccess))
+    ) {
+      dispatch(actionRequestTransactionData({ customerId: id }));
+      dispatch(actionRequestCustomerById({ id }));
+    }
+  }, [options, updateCustomerDataSuccess, saveTransactionDataSuccess]);
+  console.log("transactionData", transactionData);
   function handleClick(e) {
     if (e.target.name === "received") {
       setOption(1);
@@ -35,25 +53,13 @@ function DebtAndCread() {
               <h1>{customerData.name}</h1>
             </div>
             <div className="transactions">
-              <EachTransaction type={1} />
-              <EachTransaction type={1} />
-              <EachTransaction type={1} />
-              <EachTransaction type={1} />
-              <EachTransaction type={1} />
-              <EachTransaction type={1} />
-              <EachTransaction type={1} />
-              <EachTransaction type={1} />
-              <EachTransaction type={2} />
-              <EachTransaction type={1} />
-              <EachTransaction type={2} />
-              <EachTransaction type={1} />
-              <EachTransaction type={2} />
-              <EachTransaction type={1} />
-
-              {/* <div className="transaction-received">100</div>
-              <div className="transaction-given">100</div>
-              <div className="transaction-received">100</div>
-              <div className="transaction-given">100</div> */}
+              {transactionData &&
+                transactionData.map((eachItem) => (
+                  <EachTransaction
+                    transactionAmount={eachItem.transactionAmount}
+                    type={eachItem.transactionCode ? 2 : 1}
+                  />
+                ))}
             </div>
             <div className="balance">
               {customerData.amount >= 0 ? (
