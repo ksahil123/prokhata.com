@@ -7,7 +7,8 @@ const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/user");
 const customerRoutes = require("./routes/customer");
 const transactionRoutes = require("./routes/transaction");
-const port = process.env.PORT;
+// Step 2 heroku
+const port = process.env.PORT || 4000;
 // express app
 const app = express();
 // middleware
@@ -27,6 +28,10 @@ app.use("/api/pro-khata", workoutRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/customer", customerRoutes);
 app.use("/api/transaction", transactionRoutes);
+
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static("frontend/build"));
+}
 // Connect to db
 
 mongoose
